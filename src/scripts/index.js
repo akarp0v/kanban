@@ -133,9 +133,10 @@ function getDataFromServer() {
     fetch('http://localhost:3000/column/').then(response => response.json()),
     fetch('http://localhost:3000/user/').then(response => response.json())
   ]).then(([card, column, user]) => {
-    console.log([column.message, user.message, card.message]);
     renderColumns(column.message);
     renderCards(column.message, user.message, card.message);
+    console.log("postDataToServer");
+    console.log([column.message, user.message, card.message]);
     // GET_CARDS_RESPONSE = card['message'];
     // GET_COLUMNS_RESPONSE = column['message'];
     // GET_USERS_RESPONSE = user['message'];
@@ -156,14 +157,14 @@ document.querySelector('.app').addEventListener('change', event => {
   currentCard.columnId = target.value;
 
   postDataToServer({
-    id: currentCardId,
+    id: +currentCardId,
     text: currentCard.textContent,
-    columnId: target.value,
-    userId: currentCard.parentElement.lastElementChild.lastElementChild.value
+    columnId: +target.value,
+    userId: +currentCard.parentElement.lastElementChild.lastElementChild.value
   });
 
-  document.querySelectorAll(".card").forEach(function (card) {
-    card.remove();
+  document.querySelectorAll(".column").forEach(function (column) {
+    column.remove();
   });
 
   getDataFromServer();
