@@ -5,61 +5,6 @@ if (process.env.NODE_ENV === 'development') {
   require('../index.html');
 }
 
-let GET_CARDS_RESPONSE = [
-  {
-    id: 1,
-    text: 'create menu',
-    description: 'need create flex menu',
-    userId: 2,
-    columnId: 1
-  },
-  {
-    id: 2,
-    text: 'change background',
-    description: 'please, change background to red',
-    userId: 1,
-    columnId: 65
-  }
-];
-
-let GET_COLUMNS_RESPONSE = [
-  {
-    id: 1,
-    name: 'todo',
-    order: 1
-  },
-  {
-    id: 17,
-    name: 'dev',
-    order: 2
-  },
-  {
-    id: 23,
-    name: 'qa',
-    order: 3
-  },
-  {
-    id: 65,
-    name: 'done',
-    order: 4
-  },
-];
-
-let GET_USERS_RESPONSE = [
-  {
-    id: 1,
-    login: 'Vicktor',
-    email: 'wef@we.ru',
-    photoUrl: 'https://24smi.org/public/media/235x307/celebrity/2017/02/16/5QBRax8G5tZY_dmitrii-medvedev.jpg'
-  },
-  {
-    id: 2,
-    login: 'Vova',
-    email: 'wqweef@we.ru',
-    photoUrl: 'https://histrf.ru/uploads/media/person/0001/59/thumb_58645_person_big.jpeg'
-  },
-];
-
 function renderColumns(columns) {
   columns.forEach(function (column) {
     let newColumn = document.createElement('div');
@@ -116,7 +61,6 @@ function postDataToServer(data) {
       "Content-type": "application/json"
     },
     body: JSON.stringify(data)
-    // body: JSON.stringify({ title: toSave })
   });
 
   request.then(res => {
@@ -124,30 +68,36 @@ function postDataToServer(data) {
   }, res => {
     throw `Ошибка ${res.status}`;
   })
-    .then(res => console.log(res));
+    .then(res => {
+      // document.querySelectorAll(".column").forEach(function (column) {
+      //   column.remove();
+      // });
+      console.log("postDataToServer");
+      console.log(res);
+    });
 }
 
 function getDataFromServer() {
+  let headers = {
+    "Content-type": "application/json",
+    'pragma': 'no-cache',
+    'cache-control': 'no-cache'
+  };
   Promise.all([
-    fetch('http://localhost:3000/card/').then(response => response.json()),
-    fetch('http://localhost:3000/column/').then(response => response.json()),
-    fetch('http://localhost:3000/user/').then(response => response.json())
+    fetch('http://localhost:3000/card/', { headers }).then(response => response.json()),
+    fetch('http://localhost:3000/column/', { headers }).then(response => response.json()),
+    fetch('http://localhost:3000/user/', { headers }).then(response => response.json())
   ]).then(([card, column, user]) => {
     renderColumns(column.message);
     renderCards(column.message, user.message, card.message);
-    console.log("postDataToServer");
+    console.log("getDataFromServer");
     console.log([column.message, user.message, card.message]);
-    // GET_CARDS_RESPONSE = card['message'];
-    // GET_COLUMNS_RESPONSE = column['message'];
-    // GET_USERS_RESPONSE = user['message'];
   }).catch((err) => {
     console.log(err);
   });
 }
 
 getDataFromServer();
-// renderColumns(GET_COLUMNS_RESPONSE);
-// renderCards(GET_CARDS_RESPONSE);
 
 document.querySelector('.app').addEventListener('change', event => {
   let target = event.target;
@@ -155,6 +105,7 @@ document.querySelector('.app').addEventListener('change', event => {
   let currentCardId = target.parentElement.parentElement.firstElementChild.dataset.cardId;
   let currentCard = document.querySelector(`[data-card-id="${currentCardId}"]`);
   currentCard.columnId = target.value;
+  // target.parentElement.parentElement.classList.add('card--changed');
 
   postDataToServer({
     id: +currentCardId,
@@ -163,18 +114,5 @@ document.querySelector('.app').addEventListener('change', event => {
     userId: +currentCard.parentElement.lastElementChild.lastElementChild.value
   });
 
-  document.querySelectorAll(".column").forEach(function (column) {
-    column.remove();
-  });
-
-  getDataFromServer();
-
-  // GET_CARDS_RESPONSE.forEach(function (card, i) {
-  //   if (card.id == currentCardId) {
-  //     GET_CARDS_RESPONSE[i].columnId = target.value;
-  //   }
-  // });
-
-  // renderCards(GET_CARDS_RESPONSE);
-  // console.log('change');
+  document.querySelector(`[data-column-id="${target.value}"]`).appendChild(currentCard.parentElement);
 });

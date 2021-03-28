@@ -18,3 +18,9 @@ body {
     padding: 20px;
   }
 }
+
+.card {
+  &--changed {
+    background: red;
+  }
+}
