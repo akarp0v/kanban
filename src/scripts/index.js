@@ -69,9 +69,6 @@ function postDataToServer(data) {
     throw `Ошибка ${res.status}`;
   })
     .then(res => {
-      // document.querySelectorAll(".column").forEach(function (column) {
-      //   column.remove();
-      // });
       console.log("postDataToServer");
       console.log(res);
     });
