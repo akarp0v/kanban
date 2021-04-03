@@ -10,7 +10,13 @@ A lightweight foundation for your next webpack based frontend project.
 npm install
 ```
 
-### Start Dev Server
+### Start Server
+
+```
+npm run server
+```
+
+### Start Client
 
 ```
 npm start
