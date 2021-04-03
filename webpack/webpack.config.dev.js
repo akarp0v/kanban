@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
-const StylelintPlugin = require('stylelint-webpack-plugin');
 const liveReloadPlugin = require('webpack-livereload-plugin');
 
 const common = require('./webpack.common.js');
@@ -23,9 +22,6 @@ module.exports = merge(common, {
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
     new liveReloadPlugin(),
-    new StylelintPlugin({
-      files: path.join('src', '**/*.s?(a|c)ss'),
-    }),
   ],
   module: {
     rules: [
@@ -46,11 +42,7 @@ module.exports = merge(common, {
         test: /\.js$/,
         include: path.resolve(__dirname, '../src'),
         loader: 'babel-loader',
-      },
-      {
-        test: /\.s?css$/i,
-        use: ['style-loader', 'css-loader?sourceMap=true', 'postcss-loader', 'sass-loader'],
-      },
+      }
     ],
   }
 });
