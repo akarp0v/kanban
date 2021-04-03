@@ -1,3 +1,5 @@
+import '../../node_modules/modern-normalize/modern-normalize.css';
+import '../styles/style.scss';
 import { Board } from './board';
 import { HttpClient } from './http-client';
 
@@ -18,7 +20,7 @@ if (process.env.NODE_ENV === 'development') {
     subject.subscribe((data) => {
       httpClient.changeCardColumn(data.cardToUpdate).then(() => {
         board.onAfterChangeColumnCard(data.e, data.cardToUpdate.id);
-      })
+      });
     });
 
   });

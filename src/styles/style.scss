@@ -1,0 +1,26 @@
+body {
+  /* https://www.figma.com/file/GdzR0Y4gMtV9ERf5GNryJpLQ/Tasker */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.columns {
+  display: flex;
+}
+
+.column {
+  width: 100%;
+  border-right: 1px solid gray;
+  height: 100vh;
+
+  &__title {
+    border-bottom: 1px solid gray;
+    text-align: center;
+    padding: 20px;
+  }
+}
+
+.card {
+  &--changed {
+    background: red;
+  }
+}
